@@ -1,0 +1,22 @@
+"use client";
+
+import { FormEvent, useState } from "react";
+
+export default function BarberLoginPage() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  async function handleLogin(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault(); setError(""); setLoading(true);
+    try {
+      const response = await fetch("/api/auth/barber-login", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ email, password }) });
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.error ?? "E-mail ou palavra-passe incorretos");
+      window.location.assign("/barber/dashboard");
+    } catch (reason) { setError(reason instanceof Error ? reason.message : "Não foi possível iniciar sessão."); setLoading(false); }
+  }
+
+  return <main className="flex min-h-screen items-center justify-center bg-zinc-950 px-5"><section className="w-full max-w-md rounded-3xl border border-zinc-800 bg-zinc-900 p-8 shadow-2xl shadow-black/30"><div className="mb-8"><span className="text-sm font-bold tracking-[.25em] text-gold-400">ACESSO RESTRITO</span><h1 className="mt-2 text-2xl font-semibold text-white">Painel do Profissional</h1></div><form onSubmit={handleLogin} className="space-y-5"><label className="block"><span className="mb-2 block text-sm font-medium text-zinc-400">E-mail</span><input type="email" value={email} onChange={(event) => setEmail(event.target.value)} className="w-full rounded-xl border border-zinc-800 bg-zinc-950 p-4 text-white outline-none transition-colors focus:border-gold-400" required/></label><label className="block"><span className="mb-2 block text-sm font-medium text-zinc-400">Palavra-passe</span><input type="password" value={password} onChange={(event) => setPassword(event.target.value)} className="w-full rounded-xl border border-zinc-800 bg-zinc-950 p-4 text-white outline-none transition-colors focus:border-gold-400" required/></label>{error && <p role="alert" className="rounded-xl border border-red-900 bg-red-500/10 p-4 text-sm text-red-300">{error}</p>}<button type="submit" disabled={loading} className="mt-4 w-full rounded-xl bg-gold-500 p-4 font-bold text-zinc-950 transition-all duration-300 hover:bg-gold-400 disabled:opacity-60">{loading ? "A entrar..." : "Entrar no Sistema"}</button></form></section></main>;
+}
