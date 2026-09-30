@@ -1,0 +1,11 @@
+"use client";
+import Link from "next/link";
+import { FormEvent, useState } from "react";
+import { forgotPasswordSchema } from "@/lib/schemas";
+import { Input } from "@/components/ui/input";
+
+export default function ForgotPasswordPage() {
+  const [message, setMessage] = useState(""); const [error, setError] = useState(""); const [loading, setLoading] = useState(false);
+  async function submit(event: FormEvent<HTMLFormElement>) { event.preventDefault(); setError(""); setMessage(""); const data = Object.fromEntries(new FormData(event.currentTarget)); const parsed = forgotPasswordSchema.safeParse(data); if (!parsed.success) return setError(parsed.error.issues[0]?.message ?? "E-mail inválido"); setLoading(true); const response = await fetch("/api/auth/forgot-password", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(parsed.data) }); const body = await response.json(); setLoading(false); if (!response.ok) return setError(body.error); setMessage(body.message); }
+  return <main className="grid min-h-screen place-items-center bg-zinc-950 px-5"><section className="w-full max-w-md rounded-3xl border border-zinc-800 bg-zinc-900/60 p-8 shadow-2xl shadow-black/30"><p className="text-xs font-bold tracking-[.25em] text-gold-400">CORTE</p><h1 className="mt-3 text-3xl font-semibold">Recupere a sua senha.</h1><p className="mt-2 text-sm text-zinc-400">Enviaremos um link seguro para o seu e-mail.</p><form onSubmit={submit} className="mt-8 space-y-5" noValidate><Input label="E-mail" name="email" type="email" autoComplete="email" placeholder="voce@email.com"/>{error && <p role="alert" className="rounded-xl bg-red-500/10 p-3 text-sm text-red-300">{error}</p>}{message && <p role="status" className="rounded-xl bg-gold-500/10 p-3 text-sm text-gold-400">{message}</p>}<button disabled={loading} className="w-full rounded-xl bg-white py-3 font-semibold text-zinc-950 transition-all duration-300 hover:bg-gold-400 disabled:opacity-60">{loading ? "Enviando..." : "Enviar link"}</button></form><p className="mt-7 text-center text-sm text-zinc-400"><Link href="/login" className="font-semibold text-white hover:text-gold-400">Voltar para entrar</Link></p></section></main>;
+}
