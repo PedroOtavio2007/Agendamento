@@ -18,6 +18,7 @@ model User {
   name         String
   email        String        @unique
   passwordHash String
+  emailVerified DateTime?
   appointments Appointment[]
 }
 
@@ -26,11 +27,32 @@ model Barber {
   name         String
   email        String        @unique  // NOVO: E-mail de acesso do barbeiro
   passwordHash String                 // NOVO: Palavra-passe encriptada
+  emailVerified DateTime?
   avatarUrl    String?
   bio          String?
   appointments Appointment[]
   createdAt    DateTime      @default(now())
   updatedAt    DateTime      @updatedAt
+}
+
+model VerificationToken {
+  id      String   @id @default(cuid())
+  email   String
+  token   String   @unique
+  expires DateTime
+
+  @@unique([email, token])
+  @@index([email])
+}
+
+model PasswordResetToken {
+  id      String   @id @default(cuid())
+  email   String
+  token   String   @unique
+  expires DateTime
+
+  @@unique([email, token])
+  @@index([email])
 }
 
 model Service {
