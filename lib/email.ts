@@ -21,3 +21,8 @@ export async function sendPasswordResetEmail(email: string, token: string) {
   const url = `${appUrl}/reset-password?token=${encodeURIComponent(token)}`;
   return sendEmail(email, "Redefina a sua senha", message("Redefinição de senha", "Use o botão abaixo para escolher uma nova senha. Este link expira em uma hora.", url, "Redefinir senha"));
 }
+
+export async function sendBarberPasswordResetEmail(email: string, token: string) {
+  const url = `${appUrl}/barber/reset-password?token=${encodeURIComponent(token)}`;
+  return sendEmail(email, "Redefina a senha do Painel do Profissional", message("Redefinição de acesso profissional", "Use o botão abaixo para redefinir a senha do seu painel. Este link expira em uma hora.", url, "Redefinir senha"));
+}

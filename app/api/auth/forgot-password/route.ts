@@ -12,7 +12,7 @@ export async function POST(request: Request) {
   const email = parsed.data.email.toLowerCase(); const user = await prisma.user.findUnique({ where: { email } });
   if (!user) return NextResponse.json({ message: responseMessage });
   const token = randomBytes(32).toString("hex");
-  await prisma.$transaction([prisma.passwordResetToken.deleteMany({ where: { email } }), prisma.passwordResetToken.create({ data: { email, token, expires: new Date(Date.now() + 3_600_000) } })]);
+  await prisma.$transaction([prisma.passwordResetToken.deleteMany({ where: { email, owner: "USER" } }), prisma.passwordResetToken.create({ data: { email, token, owner: "USER", expires: new Date(Date.now() + 3_600_000) } })]);
   try { await sendPasswordResetEmail(email, token); } catch { return NextResponse.json({ error: "Não foi possível enviar o e-mail agora. Tente novamente mais tarde." }, { status: 503 }); }
   return NextResponse.json({ message: responseMessage });
 }
