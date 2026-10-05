@@ -13,6 +13,11 @@ enum AppointmentStatus {
   CANCELLED
 }
 
+enum PasswordResetOwner {
+  USER
+  BARBER
+}
+
 model User {
   id           String        @id @default(cuid())
   name         String
@@ -50,9 +55,10 @@ model PasswordResetToken {
   email   String
   token   String   @unique
   expires DateTime
+  owner   PasswordResetOwner @default(USER)
 
   @@unique([email, token])
-  @@index([email])
+  @@index([email, owner])
 }
 
 model Service {
