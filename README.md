@@ -8,6 +8,17 @@
 
 Um sistema completo de agendamento e gerenciamento para barbearias. Construído com foco em segurança, escalabilidade e experiência do usuário, o sistema possui fluxos de autenticação independentes para clientes e profissionais, além de envio de e-mails transacionais.
 
+## Acesso ao Projeto (Live Demo)
+
+O sistema está online e totalmente funcional. Pode testar a interface de cliente ou aceder ao painel administrativo.
+
+**[Acessar o Sistema de Agendamento-CLIQUE AQUI](https://agendamento-lyart.vercel.app)**
+
+**Credenciais para testar o Painel do Barbeiro:**
+- **E-mail:** `[coloque_aqui_o_seu_email_de_teste]`
+- **Senha:** `[coloque_aqui_a_senha_de_teste]`
+*(Nota: Devido a restrições anti-spam do plano gratuito, a criação de novas contas e recuperação de palavra-passe só funcionam para e-mails previamente autorizados).*
+
 ## Funcionalidades Principais
 
 * **Arquitetura Multi-Tenant:** Perfis e painéis totalmente separados para **Clientes** e **Barbeiros**, garantindo segurança e controle de acesso rigoroso.
