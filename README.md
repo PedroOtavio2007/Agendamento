@@ -1,16 +1,38 @@
-# Corte — agendamentos premium
+# Sistema de Agendamento para Barbearias
 
-## Executar localmente
+![Next.js](https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
+![Prisma](https://img.shields.io/badge/Prisma-3982CE?style=for-the-badge&logo=Prisma&logoColor=white)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white)
 
-1. Copie `.env.example` para `.env` e informe um PostgreSQL.
-2. Execute `npm install`, `npm run db:generate`, `npm run db:migrate` e `npm run db:seed`.
-3. Inicie com `npm run dev`.
+Um sistema completo de agendamento e gerenciamento para barbearias. Construído com foco em segurança, escalabilidade e experiência do usuário, o sistema possui fluxos de autenticação independentes para clientes e profissionais, além de envio de e-mails transacionais.
 
-## Arquitetura
+## Funcionalidades Principais
 
-- `prisma/schema.prisma`: entidades relacionais User, Barber, Service e Appointment.
-- JWT em cookie `httpOnly`, com senha protegida por bcrypt.
-- O endpoint de criação usa Zod e transação serializável; a busca de colisão aplica o intervalo `startsAt < novoFim && endsAt > novoInício` para bloquear sobreposição por barbeiro.
-- A dashboard consulta `/api/appointments/last`, apresenta o último atendimento concluído e reaproveita serviço/profissional no modal de reagendamento.
+* **Arquitetura Multi-Tenant:** Perfis e painéis totalmente separados para **Clientes** e **Barbeiros**, garantindo segurança e controle de acesso rigoroso.
+* **Segurança Avançada (Autenticação):**
+  * Verificação de E-mail (Double Opt-in) com links mágicos.
+  * Fluxo completo de Recuperação e Redefinição de Senha utilizando Tokens com tempo de expiração (TTL).
+  * Senhas criptografadas no banco de dados (Bcrypt).
+* **Painel do Profissional:** Dashboard administrativa para visualização da agenda diária e controle de horários.
+* **Experiência do Cliente:** Interface intuitiva para escolha de serviços, datas e horários disponíveis.
+* **Design System Responsivo:** UI moderna com tema dark e detalhes em dourado (`zinc-950` e `gold-400`), 100% responsiva (Mobile First).
 
-Para produção na Vercel, configure `DATABASE_URL` e `JWT_SECRET` nas variáveis de ambiente. Use um PostgreSQL gerenciado compatível (Neon, Supabase ou Vercel Postgres).
+## Tecnologias Utilizadas
+
+* **Front-end:** React, Next.js (App Router), Tailwind CSS.
+* **Back-end:** Next.js API Routes (Serverless), TypeScript.
+* **Banco de Dados & ORM:** PostgreSQL (Neon Serverless) e Prisma ORM.
+* **Serviços Externos:** Resend (Disparo de E-mails Transacionais).
+* **Deploy:** Vercel.
+
+## Variáveis de Ambiente
+
+Para rodar este projeto localmente, você precisará adicionar as seguintes variáveis de ambiente no seu arquivo `.env`:
+
+```env
+DATABASE_URL="sua_string_de_conexao_do_neon"
+RESEND_API_KEY="sua_chave_api_do_resend"
+APP_URL="http://localhost:3000" # Ou a URL de produção na Vercel
+EMAIL_FROM="onboarding@resend.dev" # Ou seu domínio verificado
