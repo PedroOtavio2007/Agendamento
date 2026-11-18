@@ -1,49 +1,54 @@
 # Sistema de Agendamento para Barbearias
 
+[![Acessar Deploy](https://img.shields.io/badge/Live_Demo-Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white)](https://agendamento-lyart.vercel.app)
 ![Next.js](https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white)
 ![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
 ![Prisma](https://img.shields.io/badge/Prisma-3982CE?style=for-the-badge&logo=Prisma&logoColor=white)
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white)
 
-Um sistema completo de agendamento e gerenciamento para barbearias. Construído com foco em segurança, escalabilidade e experiência do usuário, o sistema possui fluxos de autenticação independentes para clientes e profissionais, além de envio de e-mails transacionais.
+Aplicação web full-stack desenvolvida para digitalizar o agendamento de serviços e a gestão de horários em barbearias. Projetado com foco em segurança, separação estrita de papéis e experiência do usuário, o **CORTE** conta com fluxos independentes de autenticação para clientes e profissionais, e-mails transacionais e ambiente de demonstração integrado.
 
-## Acesso ao Projeto (Live Demo)
+---
 
-O sistema está online e totalmente funcional. Pode testar a interface de cliente ou aceder ao painel administrativo.
+## Acesso ao Projeto & Modo Demonstração
 
-**[Acessar o Sistema de Agendamento-CLIQUE AQUI](https://agendamento-lyart.vercel.app)**
+A aplicação está publicada e pronta para testes diretamente pelo navegador, sem necessidade de configuração local:
 
-**Credenciais para testar o Painel do Barbeiro:**
-- **E-mail:** `[coloque_aqui_o_seu_email_de_teste]`
-- **Senha:** `[coloque_aqui_a_senha_de_teste]`
-*(Nota: Devido a restrições anti-spam do plano gratuito, a criação de novas contas e recuperação de palavra-passe só funcionam para e-mails previamente autorizados).*
+* **Visão do Cliente:** [agendamento-lyart.vercel.app/login](https://agendamento-lyart.vercel.app/login)
+* **Painel do Barbeiro:** [agendamento-lyart.vercel.app/barber/login](https://agendamento-lyart.vercel.app/barber/login)
+
+### Facilidades para Avaliação
+* **Navegação Rápida entre Perfis:** A tela de login dos clientes possui um atalho discreto na parte inferior (*"É profissional da barbearia? Acessar painel administrativo →"*) para transição imediata à área restrita.
+* **Login Administrativo em 1 Clique:** Na tela de acesso do barbeiro, utilize o botão **"Preencher credenciais de demonstração"** para carregar automaticamente os dados da conta de teste pré-configurada via seed no banco de dados:
+  * **E-mail:** `demo@corte.com`
+  * **Senha:** `Demo@1234`
+
+> *Nota sobre envios de e-mail: Devido às políticas anti-spam do plano gratuito do Resend (sem domínio customizado), o disparo de e-mails de verificação de conta e recuperação de senha está restrito a endereços autorizados.*
+
+---
 
 ## Funcionalidades Principais
 
-* **Arquitetura Multi-Tenant:** Perfis e painéis totalmente separados para **Clientes** e **Barbeiros**, garantindo segurança e controle de acesso rigoroso.
-* **Segurança Avançada (Autenticação):**
-  * Verificação de E-mail (Double Opt-in) com links mágicos.
-  * Fluxo completo de Recuperação e Redefinição de Senha utilizando Tokens com tempo de expiração (TTL).
-  * Senhas criptografadas no banco de dados (Bcrypt).
-* **Painel do Profissional:** Dashboard administrativa para visualização da agenda diária e controle de horários.
-* **Experiência do Cliente:** Interface intuitiva para escolha de serviços, datas e horários disponíveis.
-* **Design System Responsivo:** UI moderna com tema dark e detalhes em dourado (`zinc-950` e `gold-400`), 100% responsiva (Mobile First).
+* **Arquitetura Multi-Role:** Separação rigorosa entre entidades (`User` e `Barber`), rotas de API e painéis de acesso, garantindo isolamento de permissões.
+* **Autenticação e Segurança:**
+  * Verificação de e-mail (*Double Opt-in*) por meio de tokens únicos com expiração (TTL).
+  * Recuperação e redefinição de senha independentes tanto para clientes quanto para barbeiros.
+  * Armazenamento seguro de credenciais com hash criptográfico (`Bcrypt`).
+* **Gestão de Agendamentos e Agenda:**
+  * Fluxo intuitivo para o cliente selecionar serviços, datas e horários disponíveis.
+  * Dashboard administrativa exclusiva para o barbeiro acompanhar os atendimentos do dia e gerenciar a agenda.
+* **Database Seeding Automatizado:** Script configurado com Prisma para provisionar a conta de demonstração (`demo@corte.com`) de forma idempotente (`upsert`).
+* **Interface Responsiva:** Design system moderno com tema dark e acentos em dourado (`zinc-950` / `gold-400`), adaptado para dispositivos móveis e desktop.
 
-## Tecnologias Utilizadas
+---
 
-* **Front-end:** React, Next.js (App Router), Tailwind CSS.
-* **Back-end:** Next.js API Routes (Serverless), TypeScript.
-* **Banco de Dados & ORM:** PostgreSQL (Neon Serverless) e Prisma ORM.
-* **Serviços Externos:** Resend (Disparo de E-mails Transacionais).
-* **Deploy:** Vercel.
+## Stack Tecnológica
 
-## Variáveis de Ambiente
+* **Front-end:** Next.js (App Router), React, TypeScript, Tailwind CSS
+* **Back-end:** Next.js API Routes (Serverless)
+* **Banco de Dados & ORM:** PostgreSQL (Neon Serverless), Prisma ORM
+* **E-mails Transacionais:** Resend
+* **Deploy & Hospedagem:** Vercel
 
-Para rodar este projeto localmente, você precisará adicionar as seguintes variáveis de ambiente no seu arquivo `.env`:
-
-```env
-DATABASE_URL="sua_string_de_conexao_do_neon"
-RESEND_API_KEY="sua_chave_api_do_resend"
-APP_URL="http://localhost:3000" # Ou a URL de produção na Vercel
-EMAIL_FROM="onboarding@resend.dev" # Ou seu domínio verificado
+---
