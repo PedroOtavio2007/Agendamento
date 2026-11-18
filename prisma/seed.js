@@ -1,4 +1,5 @@
-const { PrismaClient } = require("@prisma/client");
+﻿const { PrismaClient } = require("@prisma/client");
+const bcrypt = require("bcryptjs");
 const prisma = new PrismaClient();
 
 const services = [
@@ -15,5 +16,28 @@ async function main() {
     if (existing) await prisma.service.update({ where: { id: existing.id }, data: service });
     else await prisma.service.create({ data: service });
   }
+
+  const passwordHash = await bcrypt.hash("Demo@1234", 10);
+  await prisma.barber.upsert({
+    where: { email: "demo@corte.com" },
+    update: {
+      name: "Barbeiro Demonstração",
+      passwordHash,
+      emailVerified: new Date(),
+    },
+    create: {
+      name: "Barbeiro Demonstração",
+      email: "demo@corte.com",
+      passwordHash,
+      emailVerified: new Date(),
+    },
+  });
 }
-main().then(() => prisma.$disconnect()).catch(async (error) => { console.error(error); await prisma.$disconnect(); process.exit(1); });
+
+main()
+  .then(() => prisma.$disconnect())
+  .catch(async (error) => {
+    console.error(error);
+    await prisma.$disconnect();
+    process.exit(1);
+  });
